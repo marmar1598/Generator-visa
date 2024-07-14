@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة إلكترونية</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        header {
+            background-color: #003366; /* لون أزرق داكن */
+            color: white;
+            padding: 10px;
+        }
+        .button {
+            margin: 20px;
+            padding: 10px 20px;
+            background-color: #0056b3; /* لون أزرق */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #004494; /* لون أزرق أغمق */
+        }
+        .number {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            white-space: pre-line; /* يسمح بتعدد الأسطر */
+        }
+        .dog {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100px;
+            background: url('https://i.imgur.com/wvZgrdM.png') no-repeat center center;
+            background-size: contain;
+        }
+        .cards {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .card {
+            margin: 0 10px;
+            width: 100px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>أهلا</h1>
+</header>
+
+<button class="button" onclick="generateRandomNumbers()">Generate</button>
+
+<div class="number" id="randomNumbers" style="display:none;"></div>
+<div class="dog" id="dog"></div>
+
+<div class="cards">
+    <img class="card" src="https://cdn.openai.com/research-covers/credit-card/visa.png" alt="Visa Card">
+    <img class="card" src="https://cdn.openai.com/research-covers/credit-card/mastercard.png" alt="Mastercard">
+</div>
+
+<script>
+    function generateRandomNumbers() {
+        let numbers = [];
+        for (let i = 0; i < 10; i++) {
+            const randomNumber = generateRandomNumber();
+            const expiryMonth = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0'); // شهر من 01 إلى 12
+            const expiryYear = Math.floor(Math.random() * 10 + 2024); // سنة من 2024 إلى 2033
+            const cvv = Math.floor(Math.random() * 900) + 100; // CVV مكون من 3 أرقام
+
+            // صياغة الرقم العشوائي
+            const result = `${randomNumber}|${expiryMonth}|${expiryYear}|${cvv}`;
+            numbers.push(result);
+        }
+
+        // عرض الأرقام في الصفحة
+        const randomNumbersDiv = document.getElementById('randomNumbers');
+        randomNumbersDiv.innerText = numbers.join('\n');
+        randomNumbersDiv.style.display = 'block';
+    }
+
+    function generateRandomNumber() {
+        return Math.floor(Math.random() * 10000000000000000).toString().padStart(16, '0'); // رقم عشوائي 16 رقم
+    }
+
+    document.addEventListener('mousemove', function(e) {
+        const dog = document.getElementById('dog');
+        const rect = dog.getBoundingClientRect();
+        const dogX = rect.left + rect.width / 2;
+        const dogY = rect.top + rect.height / 2;
+        const angle = Math.atan2(e.clientY - dogY, e.clientX - dogX) * (180 / Math.PI);
+        dog.style.transform = `translateX(-50%) rotate(${angle}deg)`;
+    });
+</script>
+
+</body>
+</html>
